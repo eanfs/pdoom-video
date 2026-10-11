@@ -12,5 +12,8 @@
 同批完成的另两集见 `../perceptron/media-validation.json`（248.56 s，MAE 2.02）与
 `../why-transformers/media-validation.json`（254.54 s，MAE 1.98）。
 
+2026-10-11 第二次渲染：切换为亮色纸感主题并加入场景切换擦除动画后重新验收，三片全部通过
+（MAE 依次 1.89 / 1.70 / 1.95，均 < 3/255），结果覆盖写入各自 `media-validation.json`。
+
 边界与未做项：按用户先前指示跳过音频，字幕为阅读时间轴而非 ASR 对齐；未连接真实模型；
 每场景 3 段字幕的结构对齐计划，但未做 TTS 旁白与响度处理。

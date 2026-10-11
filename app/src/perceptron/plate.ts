@@ -1,7 +1,7 @@
 import type * as THREE from 'three';
 import {Scene,type Frame} from '../engine/scene';
 import {Layer2D,clearRT} from '../engine/gl';
-import {C,ZH,MONO,text,box,line,arrow,dot,reveal,terminal,codeBlock,table,plot,strip,header,captionBlock} from '../explain-kit';
+import {C,ZH,MONO,text,box,line,arrow,dot,reveal,terminal,codeBlock,table,plot,strip,header,captionBlock,sceneWipe} from '../explain-kit';
 
 type Cue={id:string;start:number;end:number;title:string;caption:string[];lt:number[]};
 const log10=(v:number)=>Math.log(v)/Math.LN10;
@@ -108,6 +108,7 @@ export default class PerceptronPlate extends Scene{
    }
   }
   captionBlock(c,p.caption,p.lt,t,total,'教学示意 · 无配音 · 数字来自课程代码实跑');
+  sceneWipe(c,t,Math.max(0,Math.round(p.start)));
   this.ctx.comp.draw(this.ctx.renderer,this.layer.upload(),out);
   return {hud:0,bloom:0,halation:0,ca:0,grain:0,vignette:0,exposure:1,fade:0};
  }

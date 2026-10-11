@@ -1,7 +1,7 @@
 // Shared canvas toolkit for the AI-course explainer plates (perceptron,
 // why-transformers, codex-agent). Pure functions of their arguments; plates
-// stay pure functions of time. Palette is Codex-inspired neutral, not a brand.
-export const C = {bg:'#161616',panel:'#202020',edge:'#3a3a3a',text:'#f3f3ef',muted:'#a2a29d',green:'#b0f2b5',wash:'#26352a',red:'#efaaa4',blue:'#a4c7ef',purple:'#cab8ef'};
+// stay pure functions of time. Light paper palette; neutral, not a brand set.
+export const C = {bg:'#f7f6f1',panel:'#ffffff',edge:'#d9d5ca',text:'#23272e',muted:'#7b776c',green:'#2e7d4f',wash:'#e2f1e7',red:'#bf4d42',blue:'#3f79b3',purple:'#8168b0'};
 export const ZH = '"PingFang SC",system-ui,sans-serif', MONO = '"IBM Plex Mono",Menlo,monospace';
 export const W = 1920, H = 1080;
 
@@ -95,6 +95,18 @@ export function captionBlock(c: CanvasRenderingContext2D, lines: string[], times
   line(c, 100, 1030, 1820, 1030); line(c, 100, 1030, 100 + 1720 * clamp(t / total), 1030, C.green);
   text(c, note, 100, 1064, 21, C.muted);
   text(c, `${Math.floor(t).toString().padStart(2, '0')} / ${Math.round(total)} s`, 1820, 1064, 22, C.muted, MONO, 'right');
+}
+// Scene entry wipe: a paper curtain slides off in the first `dur` seconds,
+// green leading edge, direction alternating by scene index. Deterministic in t.
+export function sceneWipe(c: CanvasRenderingContext2D, t: number, sceneIndexSeed: number, dur = 0.55) {
+  if (t >= dur) return;
+  const k = ease(t / dur);
+  const fromRight = sceneIndexSeed % 2 === 1;
+  const edge = fromRight ? W * (1 - k) : W * k;
+  c.fillStyle = C.bg;
+  if (fromRight) c.fillRect(edge, 0, W - edge, H); else c.fillRect(0, 0, edge, H);
+  c.fillStyle = C.green;
+  if (fromRight) c.fillRect(edge, 0, 14, H); else c.fillRect(edge - 14, 0, 14, H);
 }
 export function sceneTitle(c: CanvasRenderingContext2D, title: string, no: string) {
   text(c, title, 100, 215, 64); text(c, no, 1820, 215, 30, C.muted, MONO, 'right');

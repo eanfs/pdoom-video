@@ -25,7 +25,7 @@ frames_dir = out / 'final-frames'; frames_dir.mkdir(exist_ok=True)
 for n, t in enumerate(marks):
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', str(t), '-i', str(video), '-frames:v', '1', str(frames_dir / f'{n:02d}.png')], check=True)
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-framerate', '1', '-i', str(frames_dir / '%02d.png'),
-                '-vf', f'scale=640:360,tile=3x3:margin=8:padding=8:color=0x161616', '-frames:v', '1', str(out / 'contact-sheet.jpg')], check=True)
+                '-vf', f'scale=640:360,tile=3x3:margin=8:padding=8:color=0xf7f6f1', '-frames:v', '1', str(out / 'contact-sheet.jpg')], check=True)
 def pixels(path, at=None):
     args = ['ffmpeg', '-v', 'error'] + ([] if at is None else ['-ss', str(at)]) + ['-i', str(path), '-frames:v', '1', '-vf', 'scale=320:180', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-']
     return subprocess.check_output(args)

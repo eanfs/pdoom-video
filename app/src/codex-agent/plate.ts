@@ -1,11 +1,11 @@
 import type * as THREE from 'three';
 import {Scene,type Frame} from '../engine/scene';
 import {Layer2D,clearRT} from '../engine/gl';
-import {C,ZH,MONO,text,box,line,arrow,dot,reveal,terminal,chain4,header,captionBlock} from '../explain-kit';
+import {C,ZH,MONO,text,box,line,arrow,dot,reveal,terminal,chain4,header,captionBlock,sceneWipe} from '../explain-kit';
 
 type Cue={id:string;start:number;end:number;title:string;caption:string[];lt:number[]};
 
-// Codex-inspired neutral palette; deliberately not an official brand token set.
+// Light paper palette, shared via explain-kit; not a brand token set.
 export default class AgentPlate extends Scene{
  layer=new Layer2D();
  override render(f:Frame,out:THREE.WebGLRenderTarget){
@@ -85,6 +85,7 @@ export default class AgentPlate extends Scene{
    }
   }
   captionBlock(c,p.caption,p.lt,t,total,'教学控制流示意 · 无配音 · 数字来自课程代码实跑');
+  sceneWipe(c,t,Math.max(0,Math.round(p.start)));
   this.ctx.comp.draw(this.ctx.renderer,this.layer.upload(),out);
   return {hud:0,bloom:0,halation:0,ca:0,grain:0,vignette:0,exposure:1,fade:0};
  }

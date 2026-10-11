@@ -9,7 +9,7 @@
   "decode": "passed",
   "blackFrames": "none at specified threshold",
   "stillComparisonAtSeconds": 134.64,
-  "meanAbsoluteError255": 2.0157523148148146,
-  "bytes": 4977953,
-  "sha256": "fde497c93609e3c9f640964cf1969b561f0cbf1703118027ac22cbcef916808a"
+  "meanAbsoluteError255": 1.696880787037037,
+  "bytes": 5626716,
+  "sha256": "b2a7b72890ee45ec34267edbcc4ab63fb0657d2cf29b68a9db96ac43728cd486"
 }
