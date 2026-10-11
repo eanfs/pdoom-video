@@ -32,6 +32,17 @@ ReAct 三段式、2026 年原生推理的转变、五大要素（模型/工具/�
 - `agent-loop.srt`：字幕；尚未生成音频，属于临时阅读时间轴。
 - `local-engine-provenance.json`：从用户本地项目复制的引擎文件及 SHA-256。
 
+## 电影感变体（cinema）
+
+`agent-loop-cinematic-1080p.mp4` 是同一集内容与时间轴的另一种渲染：叠加原音乐视频的后期链
+（bloom 0.3、halation 0.2、色差 1.6 px、颗粒 0.06、暗角 0.32），并用参考命令同款的
+`--samples auto --shutter 0.2` 自适应运动模糊（静帧约 12 子帧、擦除/揭示处自动升到 36–324）。
+实现：`app/codex-agent-cinema.html` + `app/src/codex-agent-cinema/`（plate 继承原 AgentPlate，只覆盖后期参数）。
+渲染命令：python3 codex-agent/render-cinema.py（输出 out/codex-agent/agent-loop-cinematic-1080p.mp4）。
+
+注意：颗粒对编码很贵——CRF 17 会产出约 900 MB，变体固定用 CRF 22（68 MB，183.2 s，5495 帧），
+验收见 `cinema-validation.json`。两个版本共用 cues 与字幕，可对照观看。
+
 ## 复现
 
 ```bash
