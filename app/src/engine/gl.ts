@@ -2,12 +2,16 @@
 // a texture compositor and Canvas2D layers uploaded as textures.
 import * as THREE from 'three';
 import { GLSL_COMMON } from './glsl/common';
-import { SCALE } from './scale';
+import { SCALE, readLayout } from './scale';
 
 export { SCALE };
-/** Logical canvas: scenes lay out in these px at every output scale. */
-export const W = 1920;
-export const H = 1080;
+/**
+ * Logical canvas: scenes lay out in these px at every output scale.
+ * `?portrait=1` swaps to a 1080x1920 canvas for vertical video.
+ */
+const PORTRAIT = typeof location !== 'undefined' && readLayout() === 'portrait';
+export const W = PORTRAIT ? 1080 : 1920;
+export const H = PORTRAIT ? 1920 : 1080;
 /** Physical (output) size: the logical canvas times SCALE (`?scale=2` → 3840x2160). */
 export const PW = W * SCALE;
 export const PH = H * SCALE;

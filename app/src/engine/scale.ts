@@ -9,3 +9,9 @@ function readScale() {
 
 /** Physical pixels per logical pixel of the output (integer 1..4, default 1). */
 export const SCALE = readScale();
+
+/** `?portrait=1` lays the logical canvas out as 1080x1920 instead of 1920x1080. */
+export function readLayout(): 'landscape' | 'portrait' {
+  if (typeof location === 'undefined') return 'landscape';
+  return new URLSearchParams(location.search).get('portrait') ? 'portrait' : 'landscape';
+}

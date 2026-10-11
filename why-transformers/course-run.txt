@@ -1,0 +1,25 @@
+# phases/07-transformers-deep-dive/01-why-transformers/code/main.py
+# run: python3 main.py
+
+=== serial-depth comparison ===
+       N     rnn depth    attn depth     speedup (ops)
+      64            64             6               11x
+     512           512             9               57x
+    4096          4096            12              341x
+   32768         32768            15             2185x
+  262144        262144            18            14564x
+
+=== wall-clock on this machine (pure Python) ===
+       N    rnn (ms)   attn (ms)     ratio
+    1000        0.03        0.01      4.4x
+   10000        0.11        0.02      5.3x
+  100000        1.11        0.17      6.7x
+ 1000000       20.28        1.69     12.0x
+
+=== prefix-sum equivalence check ===
+length: 16, mismatches between serial and parallel scan: 0
+last value (serial):   120.0
+last value (parallel): 120.0
+
+takeaway: attention wins on every dimension but memory.
+memory cost is O(N^2) for full attention; Lesson 12 covers the fixes.

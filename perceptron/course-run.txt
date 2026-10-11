@@ -1,0 +1,49 @@
+# phases/03-deep-learning-core/01-the-perceptron/code/perceptron.py
+# run: python3 perceptron.py
+
+=== AND Gate ===
+Converged at epoch 4
+  Weights: [0.2, 0.1], Bias: -0.20000000000000004
+  [0, 0] -> 0 (expected 0) OK
+  [0, 1] -> 0 (expected 0) OK
+  [1, 0] -> 0 (expected 0) OK
+  [1, 1] -> 1 (expected 1) OK
+
+=== OR Gate ===
+Converged at epoch 4
+  Weights: [0.1, 0.1], Bias: -0.1
+  [0, 0] -> 0 (expected 0) OK
+  [0, 1] -> 1 (expected 1) OK
+  [1, 0] -> 1 (expected 1) OK
+  [1, 1] -> 1 (expected 1) OK
+
+=== NOT Gate ===
+Converged at epoch 3
+  Weights: [-0.1], Bias: 0.0
+  [0] -> 1 (expected 1) OK
+  [1] -> 0 (expected 0) OK
+
+=== XOR Gate (single perceptron - will fail) ===
+Did not converge after 1000 epochs
+  [0, 0] -> 1 (expected 0) WRONG
+  [0, 1] -> 1 (expected 1) OK
+  [1, 0] -> 0 (expected 1) WRONG
+  [1, 1] -> 0 (expected 0) OK
+
+=== XOR Gate (multi-layer network - works) ===
+  [0, 0] -> 0 (expected 0) OK
+  [0, 1] -> 1 (expected 1) OK
+  [1, 0] -> 1 (expected 1) OK
+  [1, 1] -> 0 (expected 0) OK
+
+=== XOR Gate (trained 2-layer network with backpropagation) ===
+  Epoch 0, error: 1.2164
+  Epoch 2000, error: 0.0017
+  Epoch 4000, error: 0.0007
+  Epoch 6000, error: 0.0005
+  Epoch 8000, error: 0.0003
+
+  [0, 0] -> 0.0074 (rounded: 0, expected 0)
+  [0, 1] -> 0.9923 (rounded: 1, expected 1)
+  [1, 0] -> 0.9923 (rounded: 1, expected 1)
+  [1, 1] -> 0.0094 (rounded: 0, expected 0)

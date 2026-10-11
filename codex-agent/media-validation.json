@@ -1,0 +1,15 @@
+{
+  "duration": 183.15,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "frames": 5494,
+  "scenes": 9,
+  "audio": false,
+  "decode": "passed",
+  "blackFrames": "none at specified threshold",
+  "stillComparisonAtSeconds": 91.58,
+  "meanAbsoluteError255": 1.9940856481481481,
+  "bytes": 3891622,
+  "sha256": "a08da874484c63b864d81a8c3a424ad3d507aae9a9eb3ebb502969e41bfb1807"
+}
