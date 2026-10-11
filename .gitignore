@@ -12,3 +12,7 @@ analysis/__pycache__/
 analysis/stems/
 analysis/work/
 analysis/qa/
+
+# course narration: TTS clip cache (regenerable, keyed by voice+text) and assembled tracks
+aieng-tts/cache/
+*/narration.wav

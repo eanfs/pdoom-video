@@ -13,7 +13,7 @@ PROD = 'codex-agent'
 FPS = 30
 PER_CHAR = 0.27
 MIN_LINE = 3.0
-LEAD, TAIL, GAP = 1.8, 1.2, 0.5
+LEAD, TAIL, GAP = 1.2, 2.0, 1.6
 
 SCENES = [
  dict(id='intro', title='Agent 循环', lines=[
@@ -54,12 +54,27 @@ SCENES = [
   '先把最小循环跑通，再扩展复杂能力。']),
 ]
 
+_MANIFEST = None
+
+def _measured(sid, i, ln):
+    """Real TTS clip duration when the manifest line matches, else the reading estimate."""
+    global _MANIFEST
+    if _MANIFEST is None:
+        import json as _json
+        from pathlib import Path as _P
+        _p = _P(__file__).resolve().parent / 'tts-manifest.json'
+        _MANIFEST = _json.loads(_p.read_text(encoding='utf-8')) if _p.exists() else {'scenes': {}}
+    m = _MANIFEST['scenes'].get(sid)
+    if m and i < len(m) and m[i]['text'] == ln:
+        return m[i]['dur']
+    return max(MIN_LINE, len(ln) * PER_CHAR)
+
 def build():
     cues, t = [], 0.0
     for sc in SCENES:
         times, cur = [], LEAD
-        for ln in sc['lines']:
-            d = max(MIN_LINE, len(ln) * PER_CHAR)
+        for i, ln in enumerate(sc['lines']):
+            d = _measured(sc['id'], i, ln)
             times.append(round(cur, 2)); cur += d + GAP
         dur = cur - GAP + TAIL
         cues.append(dict(id=sc['id'], start=round(t, 2), end=round(t + dur, 2),

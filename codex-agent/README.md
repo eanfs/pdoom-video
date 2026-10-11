@@ -1,9 +1,8 @@
 # Agent 循环（14-01）：PDOOM 引擎课程样片
 
-约 183 秒、1920×1080、30 fps，无配音。复用 pdoom-video 的 Three.js Engine、Layer2D、合成和离线导出器；
+约 180 秒、1920×1080、30 fps，火山豆包语音配音（zh_female_cancan_mars_bigtts）。复用 pdoom-video 的 Three.js Engine、Layer2D、合成和离线导出器；
 新增独立入口，不使用原项目歌曲或歌词。本版按父仓库制作计划「Task 12 · 样片 C」重制为 9 场景结构
-（原 7 场景 90 秒测试片升级；git 历史保留旧版）。因按用户先前指示跳过音频，旁白改为阅读节奏字幕
-（每场景 3 段），时长按 T-M 档落在 180–240 秒。
+（原 7 场景 90 秒测试片升级；git 历史保留旧版）。旁白为豆包语音合成（aieng-tts/narrate.py，按句缓存防重复计费），字幕与语音共用同一份时间轴；时长按 T-M 档落在 180–240 秒。
 
 ## 内容和视觉
 
@@ -41,7 +40,7 @@ ReAct 三段式、2026 年原生推理的转变、五大要素（模型/工具/�
 渲染命令：python3 codex-agent/render-cinema.py（输出 out/codex-agent/agent-loop-cinematic-1080p.mp4）。
 
 注意：颗粒对编码很贵——CRF 17 会产出约 900 MB，变体固定用 CRF 22（68 MB，183.2 s，5495 帧），
-验收见 `cinema-validation.json`。两个版本共用 cues 与字幕，可对照观看。
+验收见 `cinema-validation.json`。两个版本共用 cues、字幕与旁白，可对照观看。
 
 ## 复现
 

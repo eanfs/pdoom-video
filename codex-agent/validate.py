@@ -14,7 +14,8 @@ probe = json.loads(subprocess.check_output(['ffprobe', '-v', 'error', '-show_str
 v = next(s for s in probe['streams'] if s['codec_type'] == 'video')
 assert (v['width'], v['height'], v['r_frame_rate']) == (1920, 1080, '30/1') and abs(int(v['nb_frames']) - frames) <= 2, (v['width'], v['height'], v['r_frame_rate'], v['nb_frames'], frames)
 assert abs(float(probe['format']['duration']) - duration) < .05
-assert not any(s['codec_type'] == 'audio' for s in probe['streams'])
+has_audio = any(s['codec_type'] == 'audio' for s in probe['streams'])
+assert has_audio == (HERE / 'narration.wav').exists()
 subprocess.run(['ffmpeg', '-v', 'error', '-i', str(video), '-f', 'null', '-'], check=True, capture_output=True)
 black = subprocess.run(['ffmpeg', '-hide_banner', '-i', str(video), '-vf', 'blackdetect=d=0.08:pix_th=0.02:pic_th=0.98', '-an', '-f', 'null', '-'], check=True, capture_output=True, text=True)
 assert 'black_start:' not in black.stderr
@@ -33,7 +34,7 @@ check = marks[len(marks) // 2]
 a = pixels(video, check); b = pixels(out / f'stills/f_{check:07.2f}.png') if (out / f'stills/f_{check:07.2f}.png').exists() else pixels(root / f'out/wip/ca-check/f_{check:07.2f}.png') if (root / f'out/wip/ca-check/f_{check:07.2f}.png').exists() else None
 mae = sum(abs(x - y) for x, y in zip(a, b)) / len(a) if b else None
 result = {'duration': duration, 'width': 1920, 'height': 1080, 'fps': 30, 'frames': frames,
-          'scenes': nscenes, 'audio': False, 'decode': 'passed',
+          'scenes': nscenes, 'audio': has_audio, 'decode': 'passed',
           'blackFrames': 'none at specified threshold', 'stillComparisonAtSeconds': check,
           'meanAbsoluteError255': mae, 'bytes': video.stat().st_size,
           'sha256': hashlib.sha256(video.read_bytes()).hexdigest()}

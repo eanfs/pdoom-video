@@ -38,4 +38,11 @@ concat = segments / 'concat.txt'
 concat.write_text(''.join(f"file '{f.name}'\n" for f in files))
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-f', 'concat', '-safe', '0', '-i', str(concat),
                 '-c', 'copy', '-movflags', '+faststart', str(out / final)], check=True)
+narration = HERE / 'narration.wav'
+if narration.exists():
+    silent = out / (final.replace('.mp4', '-silent.mp4'))
+    out.joinpath(final).rename(silent)
+    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(silent), '-i', str(narration),
+                    '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest',
+                    '-movflags', '+faststart', str(out / final)], check=True)
 print(out / final, flush=True)

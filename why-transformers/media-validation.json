@@ -1,15 +1,15 @@
 {
-  "duration": 254.54,
+  "duration": 243.79,
   "width": 1920,
   "height": 1080,
   "fps": 30,
-  "frames": 7636,
+  "frames": 7314,
   "scenes": 12,
-  "audio": false,
+  "audio": true,
   "decode": "passed",
   "blackFrames": "none at specified threshold",
-  "stillComparisonAtSeconds": 137.88,
-  "meanAbsoluteError255": 1.9479166666666667,
-  "bytes": 5578339,
-  "sha256": "9acc26cffa0aa45ce3398b0b8401bd10cf89a838a47501d1f0f870e08682ac87"
+  "stillComparisonAtSeconds": 132.05,
+  "meanAbsoluteError255": 1.9433680555555555,
+  "bytes": 8047575,
+  "sha256": "92fba29f62443c6066dd41cabc624c3be4dadb365bfafcb1a133314b0d325338"
 }
