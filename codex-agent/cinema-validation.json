@@ -1,0 +1,14 @@
+{
+  "width": 1920,
+  "height": 1080,
+  "fps": "30/1",
+  "frames": "5495",
+  "duration": 183.166667,
+  "audio": false,
+  "decode": "passed",
+  "bytes": 68453116,
+  "sha256": "3152f7946b86cba3a71b2b4ffef71b58df42963cc9d78875dd6be28f96eb43a4",
+  "samples": "auto (adaptive)",
+  "shutter": 0.2,
+  "crf": 22
+}

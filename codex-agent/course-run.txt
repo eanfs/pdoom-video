@@ -1,0 +1,20 @@
+======================================================================
+TOY REACT LOOP — Phase 14, Lesson 01
+======================================================================
+
+[00    user] What is 120 plus 15% tax, stored in kv?
+[01 thought] store the base price
+[02  action] kv_set({'key': 'base', 'value': '120'}) -> stored base
+[03 thought] compute 15% tax
+[04  action] calculator({'expr': '120 * 0.15'}) -> 18.0
+[05 thought] store the tax
+[06  action] kv_set({'key': 'tax', 'value': '18.0'}) -> stored tax
+[07 thought] compute total
+[08  action] calculator({'expr': '120 + 18.0'}) -> 138.0
+[09 thought] confirm stored values
+[10  action] kv_get({'key': 'base'}) -> 120
+[11   final] the total including 15% tax is 138.0
+
+final answer: the total including 15% tax is 138.0
+turns used:   5
+tools used:   ['calculator', 'kv_get', 'kv_set']

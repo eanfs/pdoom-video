@@ -121,7 +121,12 @@ export class Engine {
 
   timeline: TimelineEntry[] = [];
 
-  constructor(public canvas: HTMLCanvasElement, private makeTimeline: (lyrics: Lyrics, audio: AudioData) => TimelineEntry[]) {
+  /** The optional data overrides the timeline's audio/lyrics JSON (a non-music timeline ships its own). */
+  constructor(
+    public canvas: HTMLCanvasElement,
+    private makeTimeline: (lyrics: Lyrics, audio: AudioData) => TimelineEntry[],
+    private data: { audio?: string; lyrics?: string } = {},
+  ) {
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
     this.renderer.setPixelRatio(1);
     this.renderer.setSize(PW, PH, false);
@@ -311,7 +316,7 @@ export class Engine {
   }
 
   async init(only?: (e: TimelineEntry) => boolean) {
-    [this.audio, this.lyrics] = await Promise.all([AudioData.load(), Lyrics.load(), loadFonts(), loadStrokeFonts()]) as [AudioData, Lyrics, void, void];
+    [this.audio, this.lyrics] = await Promise.all([AudioData.load(this.data.audio), Lyrics.load(this.data.lyrics), loadFonts(), loadStrokeFonts()]) as [AudioData, Lyrics, void, void];
     this.timeline = this.makeTimeline(this.lyrics, this.audio);
     this.ctx = { renderer: this.renderer, audio: this.audio, lyrics: this.lyrics, comp: this.comp, W, H, id: '', params: {}, start: 0, end: 0, mapTileMask: (rt, map) => this.mapTileMask(rt, map) };
     this.post = new Post();

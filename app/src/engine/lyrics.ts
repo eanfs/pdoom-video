@@ -36,9 +36,10 @@ export class Lyrics {
     this.words.forEach((w, i) => (w.gi = i));
   }
 
-  static async load(): Promise<Lyrics> {
-    for (const url of ['data/lyrics.json', 'data/lyrics.approx.json']) {
-      const r = await fetch(url);
+  /** A url overrides the default music-video data: another timeline ships its own cue sheet. */
+  static async load(url?: string): Promise<Lyrics> {
+    for (const u of url ? [url] : ['data/lyrics.json', 'data/lyrics.approx.json']) {
+      const r = await fetch(u);
       if (r.ok && (r.headers.get('content-type') ?? '').includes('json')) return new Lyrics(await r.json());
     }
     throw new Error('no lyrics data found');

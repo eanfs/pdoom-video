@@ -42,9 +42,10 @@ export class AudioData {
     this.onsets = j.onsets ?? {};
   }
 
-  static async load(): Promise<AudioData> {
-    for (const url of ['data/audio.json', 'data/audio.approx.json']) {
-      const r = await fetch(url);
+  /** A url overrides the default music-video data: another timeline ships its own analysis. */
+  static async load(url?: string): Promise<AudioData> {
+    for (const u of url ? [url] : ['data/audio.json', 'data/audio.approx.json']) {
+      const r = await fetch(u);
       if (r.ok && (r.headers.get('content-type') ?? '').includes('json')) return new AudioData(await r.json());
     }
     throw new Error('no audio analysis data found');
