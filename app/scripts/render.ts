@@ -114,7 +114,7 @@ async function sheet(page: Page, times: number[], cols: number, out: string) {
  * bounded at 4K. One worker already keeps the GPU busy in the heavy scenes; a second one fills the gaps in the
  * light ones (2D drawing, readback, transfer).
  */
-async function video(url: string, from: number, to: number, fps: number, out: string) {
+async function video(url: string, from: number, to: number, fps: number, out: string, firstPage?: Awaited<ReturnType<typeof openPage>>) {
   mkdirSync(path.dirname(out), { recursive: true });
   const crf = opt('crf', '16')!;
   const audio = path.join(ROOT, 'audio/pdoom.mp3');
@@ -240,9 +240,13 @@ async function video(url: string, from: number, to: number, fps: number, out: st
   };
   let ok = false;
   try {
-    const opened = await Promise.allSettled(Array.from({ length: workers }, () => openPage(url)));
+    // (reuse an already-open page as one worker: closing a probe browser and opening fresh ones
+    //  wedges the ANGLE-Metal readback fence in this environment, so keep the first page alive)
+    const reuse = firstPage ? 1 : 0;
+    const opened = await Promise.allSettled(Array.from({ length: Math.max(0, workers - reuse) }, () => openPage(url)));
     for (const o of opened) if (o.status === 'fulfilled') pages.push(o.value);
     for (const o of opened) if (o.status === 'rejected') throw o.reason;
+    if (firstPage) pages.push(firstPage);
     const rendering = Promise.all(pages.map(async ({ page }, k) => {
       for (let r = take(); r && !failure; r = take()) {
         for (let n = r[0]; n < r[1]; n++) queue[k]!.push(n);
@@ -277,11 +281,11 @@ async function video(url: string, from: number, to: number, fps: number, out: st
 const { url, stop } = await ensureServer();
 if (mode === 'video') {
   try {
-    // (the duration comes from the audio analysis, the same in every page)
-    const { browser, page } = await openPage(url);
-    const dur: number = await page.evaluate(() => (window as any).__pdoom.duration);
-    await browser.close();
-    await video(url, +opt('from', '0')!, +opt('to', String(dur))!, +opt('fps', '60')!, path.resolve(opt('out', path.join(ROOT, 'out/pdoom.mp4'))!));
+    // (the duration comes from the audio analysis; the probe page is handed to video() as worker 0
+    //  instead of being closed and re-opened)
+    const probe = await openPage(url);
+    const dur: number = await probe.page.evaluate(() => (window as any).__pdoom.duration);
+    await video(url, +opt('from', '0')!, +opt('to', String(dur))!, +opt('fps', '60')!, path.resolve(opt('out', path.join(ROOT, 'out/pdoom.mp4'))!), probe);
   } finally { stop(); }
   process.exit(0);
 }

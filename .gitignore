@@ -16,3 +16,6 @@ analysis/qa/
 # course narration: TTS clip cache (regenerable, keyed by voice+text) and assembled tracks
 aieng-tts/cache/
 */narration.wav
+
+# python bytecode (regenerable)
+__pycache__/
